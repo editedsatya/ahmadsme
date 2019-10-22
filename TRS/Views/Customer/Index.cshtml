@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "Customer Management";
+    ViewBag.SubTitle = "Customer List";
+}
+
+
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="box">
+            <div class="box-header">
+                @*<a class="btn btn-success" style="margin-bottom:10px" onclick="PopupForm('@Url.Action("AddOrEdit","Customer")')"><i class="fa fa-plus"></i> Add New</a>*@
+                <a class="btn btn-success" style="margin-bottom:10px" onclick="AddOrEdit('0')"><i class="fa fa-plus"></i> Add New</a>
+            </div>
+            <div class="box-body">
+                <table id="userTable" class="table table-bordered table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Notes</th>
+
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section scripts{
+
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @Scripts.Render("~/Scripts/Tables/Data")
+
+
+    <script>
+        var Popup, dataTable;
+        $(document).ready(function () {
+            dataTable = $("#userTable").DataTable({
+                "ajax": {
+
+                    "url": "/Customer/GetData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "Name" },
+                    { "data": "Notes" },
+                    {
+                        "data":"Id" , "render" : function (data) {
+                            return  "<div class='tools'>" +
+                                    "<a class='btn btn-success btn-xs'  onclick=AddOrEdit('" + data + "')  ><i class='fa fa-pencil'></i> Edit</a>" +
+                                    "<a class='btn btn-danger btn-xs'  onclick = Delete('" + data + "') ><i class='fa fa-trash'></i> Delete</a> "+
+                                    "</div>";
+                    },
+                        "orderable": false,
+                        "searchable":false,
+                        //"width":"300px"
+                    }
+
+                ],
+                "language": {
+
+                    "emptyTable" : "No data found, Please click on <b>Add New</b> Button"
+                }
+            });
+        });
+
+
+
+
+
+        function AddOrEdit(id) {
+
+           window.location = '@Url.Action("AddOrEdit", "Customer")/' + id;
+
+        }
+          
+
+        function Delete(id) {
+            if (confirm('Are You Sure to Delete this Record ?')) {
+                $.ajax({
+                    type: "POST",
+                   
+                    url: '@Url.Action("Delete","Customer")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+
+                        }
+                    }
+
+                });
+            }
+        }
+    </script>
+}

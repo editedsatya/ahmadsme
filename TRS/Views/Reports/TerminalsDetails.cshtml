@@ -1,0 +1,200 @@
+﻿
+@{
+    ViewBag.Title = "Reports";
+    ViewBag.SubTitle = "Terminals Details";
+}
+
+
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+
+@*@Styles.Render("~/AdminLTE/plugins/daterangepicker/css")*@
+
+<link href="~/AdminLTE/plugins/searchAreaControl/css/searchAreaControl.css" rel="stylesheet" />
+
+
+
+
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">Filter</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-6">
+
+                <button type="button" id="myButton" class="btn btn-primary">Terminal</button>
+            </div>
+            <div class="col-md-6">
+
+
+            </div>
+        </div>
+
+
+        
+
+    </div>
+    <div class="box-footer">
+        <button type="button" value="TerminalsDetailsReport" id="btnTerminalsDetailsReport" class="btn btn-success pull-left">Terminals Details</button>
+        <button type="button" value="Search" id="btnSearch" class="btn btn-success pull-right">Search</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                @*heder items*@
+            </div>
+            <div class="box-body">
+
+                <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Terminal ID</th>
+                            <th>Merchant ID</th>
+                            <th>Merchan tName</th>
+                            <th>Merchant Address</th>
+                            <th>Merchant Phone</th>
+                            <th>Bank Name</th>
+                            <th>Last Transaction</th>
+                            <th>Last Reconciliation</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts{
+
+
+
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+
+
+
+
+    @* load datetimepicker range *@
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/daterangepicker.js"></script>
+
+
+    <script src="~/AdminLTE/plugins/searchAreaControl/js/searchAreaControl.js"></script>
+
+
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+
+
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                cache: false,
+                url: '/Reports/GetHierarchy',
+
+                success: function (records, textStatus, jqXHR) {
+                    $('#myButton').searchAreaControl({
+                        data: records,
+                        collapseNodes: true,
+
+                        mainButton: {
+                            defaultText: 'Terminal'
+                        }
+                    });
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Error - ' + errorThrown);
+                }
+            });
+
+
+
+            var oTable = $("#myTable").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true,  // this is for Enable/disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "dom": '<"top"i>rt<"bottom"lp><"clear">', // for checnge datatable controls positions
+
+                "ajax": {
+                    "url": "/Reports/LoadTerminalsDetails",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "TID", "name": "TID", "autoWidth": true },
+                    { "data": "MID", "autoWidth": true },
+                    { "data": "MerchantName", "autoWidth": true },
+                    { "data": "MerchantAddress", "autoWidth": true },
+                    { "data": "MerchantPhone", "autoWidth": true },
+                    { "data": "BankName", "autoWidth": true },
+                    { "data": "LastTrx", "autoWidth": true },
+                    { "data": "LastReconciliation", "autoWidth": true }
+
+                ]
+            });
+
+
+
+
+            $('#btnSearch').click(function () {
+
+                //Apply search for general Search // DataTable column index 3
+                //oTable.columns(0).search($('#Search').val().trim());
+                var checkedIds = $('#myButton').searchAreaControl('getSelectedByAttribute', 'key');
+
+                oTable.columns(1).search(checkedIds);
+
+                //hit search on server
+                oTable.draw();
+
+            });
+
+            $('#btnTerminalsDetailsReport').click(function () {
+
+                var checkedIds = $('#myButton').searchAreaControl('getSelectedByAttribute', 'key');
+                $.ajax(
+                    {
+                        type: 'POST', //HTTP POST Method
+                        url: "/Reports/TerminalsDetailsReport", // Controller/View
+                        dataType: "json",
+                        cache: false,
+                        data: { //Passing data
+                            TIDS: checkedIds.join() //Reading text box values using Jquery
+
+                        },
+                        success: function (Data) {
+                            //  var response = JSON.parse(Data);
+                            window.location = '/Reports/Download?fileGuid=' + Data.FileGuid
+                                + '&filename=' + Data.FileName;
+                        }
+                    });
+
+            });
+
+
+
+        });
+
+
+
+
+    </script>
+}

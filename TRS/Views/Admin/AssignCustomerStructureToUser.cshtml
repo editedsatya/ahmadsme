@@ -1,0 +1,116 @@
+﻿ 
+@{
+    ViewBag.Title = "User Management";
+    ViewBag.SubTitle = "Assign Customer Structure To User";
+}
+
+
+
+
+
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="box">
+            <div class="box-header">
+                <h2>@ViewBag.UserName</h2>
+
+                <button id="btnSave" class="btn btn-danger">Save and Close </button>
+
+            </div>
+            <div class="box-body">
+
+                <div id="tree" style="border:groove;max-height: 350px ; overflow-y: scroll;" ></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    @section Scripts{
+
+
+
+        @* Load treeview js here *@
+<script src="~/Scripts/treeview/core.min.js"></script>
+<link href="~/Content/treeview/core.min.css" rel="stylesheet" />
+
+<link href="~/Content/treeview/checkbox.min.css" rel="stylesheet" />
+<script src="~/Scripts/treeview/checkbox.min.js"></script>
+
+<script src="~/Scripts/treeview/tree.min.js"></script>
+<link href="~/Content/treeview/tree.min.css" rel="stylesheet" />
+
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+
+        // Show the "busy" Gif:
+        $("#divProcessing").show();
+
+
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            cache: false,
+            url: '/Admin/LoadCustomerStructure',
+            data: { 'UserId': '@ViewBag.UserId' },
+            success: function (records, textStatus, jqXHR) {
+                tree = $('#tree').tree({
+                    primaryKey: 'Id',
+                    dataSource: records,
+                    checkboxes: true,
+                    uiLibrary: 'bootstrap4'
+                });
+                $("#divProcessing").hide();
+                //tree.expandAll();
+                //tree.checkAll();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert('Error - ' + errorThrown);
+            }
+        });
+
+
+        //var tree = $('#tree').tree({
+        //     primaryKey: 'id',
+        //     data: { 'UserId': '@ViewBag.UserId' },
+        //     uiLibrary: 'bootstrap4',
+        //     dataSource: '/Admin/LoadCustomerStructure',
+        //     checkboxes: true
+        // });
+
+        $('#btnSave').on('click', function () {
+            var checkedIds = tree.getCheckedNodes();
+            $.ajax({ url: '/Admin/AssignCustomerStructureToUser', data: { checkedIds: checkedIds, UserId: '@ViewBag.UserId' }, method: 'POST' })
+                .done(function () {
+                    alert("Save success");
+                    window.location.href = '@Url.Action("Index", "Admin")';
+                })
+                .fail(function () { alert('Failed to save.'); })
+                ;
+
+        });
+    });
+
+
+
+
+
+
+
+</script>
+    }

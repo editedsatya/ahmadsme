@@ -1,0 +1,70 @@
+﻿@{
+    var menus = new[]{
+            //new { LinkText="Home", ActionName="Index",ControllerName="Home",Roles="All" , groupName ="Home"  },
+
+            new { LinkText="Customers", ActionName="Index",ControllerName="Customer",Roles="SuperAdmin" , groupName ="Admin Function" ,groupIcon="fa-gear" },
+
+            new { LinkText="Branches Managment", ActionName="CustomerStructure",ControllerName="Customer",Roles="Admin" ,groupName ="Admin Function",groupIcon="fa-gear" },
+
+            new { LinkText="Users Managment", ActionName="Index",ControllerName="Admin",Roles="Admin,SuperAdmin" ,groupName ="Admin Function",groupIcon="fa-gear" },
+            new { LinkText="Roles Managment", ActionName="Index",ControllerName="Roles",Roles="SuperAdmin"  ,groupName ="Admin Function",groupIcon="fa-gear"},
+
+            new { LinkText="Transactions Details", ActionName="TransactionsDetails",ControllerName="Reports",Roles="All"  ,groupName ="Reports",groupIcon="fa-file-text-o"},
+            new { LinkText="Transactions Details By Date", ActionName="TransactionsDetailsByDateAndTID",ControllerName="Reports",Roles="All" ,groupName ="Reports",groupIcon="fa-file-text-o" },
+            new { LinkText="Reconciliations Details", ActionName="ReconciliationsDetails",ControllerName="Reports",Roles="All" ,groupName ="Reports",groupIcon="fa-file-text-o" },
+            new { LinkText="Terminals Details", ActionName="TerminalsDetails",ControllerName="Reports",Roles="All" ,groupName ="Reports",groupIcon="fa-file-text-o" },
+
+};
+}
+
+
+@if (HttpContext.Current.User.Identity.IsAuthenticated)
+{
+
+    String[] roles = Roles.GetRolesForUser();
+
+    var links = from item in menus
+                where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                                .Any(x => roles.Contains(x) || x == "All")
+                select item;
+
+
+
+    var groups =
+    links
+    .GroupBy(r => new { r.groupName, r.groupIcon })
+    .OrderBy(g => g.Key.groupName)
+    .Select(g => new { groupName = g.Key.groupName, groupIcon = g.Key.groupIcon, Count = g.Count() }).ToList();
+
+
+
+    foreach (var g in groups)
+    {
+
+        int i = g.Count;
+        @:
+        <li id="left-sidebar-menu-@g.groupName.Replace(" ","")" class="treeview">
+            <a href="#">
+                <i class="fa @g.groupIcon"></i> <span>@g.groupName</span> <i class="fa fa-angle-left pull-right"></i>
+            </a>
+
+            <ul class="treeview-menu">
+
+                @foreach (var link in (from item in links where item.groupName == g.groupName select item))
+                {
+                    i--;
+                    var menuName = link.ActionName + link.ControllerName; 
+
+                    <li id="left-sidebar-menu-@menuName" ><a href="@Url.Action(link.ActionName, link.ControllerName)"><i class="fa fa-circle-o"></i>@link.LinkText</a></li>
+
+                    
+                }
+
+            </ul>
+
+        </li>
+    }
+
+}
+
+ 

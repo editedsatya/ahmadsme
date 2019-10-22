@@ -1,0 +1,93 @@
+﻿@model TRS.Models.CustomerStructure
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Add Node</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("AddNewNode", "Customer", FormMethod.Post, new { @id = "formaddNode", @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+
+                <div class="col-md-12">
+                    <div>
+                        @Html.Label("Select Perent")
+                        @Html.DropDownList("PerentId", new SelectList(ViewBag.plist, "Id", "Name"), "--select--", new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "alert-error" })
+                    </div>
+                </div>
+
+                <div class="clearfix">
+                </div>
+
+                <div class="col-md-12">
+                    <div>
+                        @Html.Label("Seq No")
+                        @Html.TextBoxFor(model => model.SeqNo, new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(m => m.SeqNo, "", new { @class = "alert-error" })
+                    </div>
+                </div>
+
+                <div class="clearfix">
+                </div>
+
+                <div class="col-md-12">
+                    <div>
+                        @Html.Label("Node Name")
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "alert-error" })
+                    </div>
+
+                </div>
+
+
+                <div class="clearfix"></div>
+                 
+
+                <div class="col-md-12">
+                    <div>
+                        @Html.Label("Is Terminal ID")
+                        @Html.CheckBoxFor(model => model.IsTID)
+
+                        @Html.ValidationMessageFor(model => model.IsTID, "", new { @class = "alert-error" })
+                    </div>
+
+                </div>
+
+
+                <div class="clearfix"> </div>
+
+
+
+            }
+
+        </div>
+
+        <div class="modal-footer">
+            <div class="pull-left">
+                <button type="button" id="savenode"  class="btn btn-success" >Save</button>
+                   </div>
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+            </div>
+
+        </div>
+
+
+</div>
+
+
+

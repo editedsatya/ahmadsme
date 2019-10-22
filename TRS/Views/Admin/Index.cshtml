@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "User Management";
+    ViewBag.SubTitle = "List Of Users";
+}
+
+
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="box">
+            <div class="box-header">
+
+                <a class="btn btn-success" style="margin-bottom:10px" onclick="AddOrEdit('')"><i class="fa fa-plus"></i> Add New User</a>
+            </div>
+            <div class="box-body">
+                <table id="userTable" class="table table-bordered table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+
+                            <th></th>
+                            
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section scripts{
+
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @Scripts.Render("~/Scripts/Tables/Data")
+
+
+    <script>
+        var Popup, dataTable;
+        $(document).ready(function () {
+            dataTable = $("#userTable").DataTable({
+                "ajax": {
+
+                    "url": "/Admin/GetData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "NameIdentifier" },
+                    { "data": "Email" },
+                    { "data": "PhoneNumber"},
+                    {
+                        "data":"Id" , "render" : function (data) {
+                            return  "<div class='tools'>" +
+                                    "<a class='btn btn-success btn-xs'  onclick=AddOrEdit('" + data + "')  ><i class='fa fa-pencil'></i> Edit</a>" +
+                                    "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal' onclick=AssingCustomerStructureToUser('" + data + "') ><i class='fa fa-pencil'></i> Assignment</a>" +
+                                    "<a class='btn btn-danger btn-xs'  onclick = Delete('" + data + "') ><i class='fa fa-trash'></i> Delete</a> "+
+                                    "</div>";
+                    },
+                        "orderable": false,
+                        "searchable":false,
+                        //"width":"300px"
+                    }
+
+                ],
+                "language": {
+
+                    "emptyTable" : "No data found, Please click on <b>Add New</b> Button"
+                }
+            });
+        });
+
+
+
+
+
+        function AddOrEdit(id) {
+
+           window.location = '@Url.Action("AddOrEdit", "Admin")/' + id;
+
+        }
+          function AssingCustomerStructureToUser(id) {
+
+           window.location = '@Url.Action("AssignCustomerStructureToUser", "Admin")/' + id;
+
+        }
+
+        function Delete(id) {
+            if (confirm('Are You Sure to Delete this User Record ?')) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete","Admin")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+
+                        }
+                    }
+
+                });
+            }
+        }
+    </script>
+}

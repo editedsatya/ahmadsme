@@ -1,0 +1,182 @@
+﻿
+@{
+                /**/
+
+                ViewBag.Title = "Reports";
+                ViewBag.SubTitle = "Transactions Details By Date";
+}
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+
+@*@Styles.Render("~/AdminLTE/plugins/daterangepicker/css")*@
+<link href="~/Content/daterangepicker.css" rel="stylesheet" />
+<link href="~/AdminLTE/plugins/searchAreaControl/css/searchAreaControl.css" rel="stylesheet" />
+
+
+
+
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">Filter</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-6">
+                @*<button id="myButton" type="button" value="Terminal" />*@
+                <button type="button" id="myButton" class="btn btn-primary">Terminal</button>
+            </div>
+            <div class="col-md-6">
+
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-6 form-group">
+                <label for="datetimes">Transaction Date Time Range</label>
+                <input type="text" class="form-control" id="datetimes" name="datetimes">
+            </div>
+            @*input-sm*@
+            <div class="col-sm-6  form-group">
+                <label for="Search">Search by TID,Amount,Stan ..</label>
+                <input type="text" class="form-control" id="Search" name="Search" placeholder="Search by TID,Amount... ">
+            </div>
+
+        </div>
+
+      
+
+    </div>
+    <div class="box-footer">
+
+        <button type="button" id="btnRunReport" class="btn btn-success pull-left">Transaction Details By Date</button>
+        @*<button type="button" value="Search" id="btnSearch" class="btn btn-success pull-right">Search</button>*@
+
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts{
+
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+
+
+
+
+    @* load datetimepicker range *@
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/daterangepicker.js"></script>
+
+
+    <script src="~/AdminLTE/plugins/searchAreaControl/js/searchAreaControl.js"></script>
+
+
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                cache: false,
+                url: '/Reports/GetHierarchy',
+
+                success: function (records, textStatus, jqXHR) {
+                    $('#myButton').searchAreaControl({
+                        data: records,
+                        collapseNodes: true,
+
+                        mainButton: {
+                            defaultText: 'Terminal'
+                        }
+                    });
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Error - ' + errorThrown);
+                }
+            });
+
+
+
+            $('#btnRunReport').click(function () {
+
+                var checkedIds = $('#myButton').searchAreaControl('getSelectedByAttribute', 'key');
+                $.ajax(
+                    {
+                        type: 'POST', //HTTP POST Method
+                        url: "/Reports/TrxDetailsByDateAndTIDReport", // Controller/View
+                        dataType: "json",
+                        cache: false,
+                        data: { //Passing data
+                            TIDS: checkedIds.join(), //Reading text box values using Jquery
+                            DateRange: $("#datetimes").val().trim()
+                        },
+                        success: function (Data) {
+                            //  var response = JSON.parse(Data);
+                            window.location = '/Reports/Download?fileGuid=' + Data.FileGuid
+                                + '&filename=' + Data.FileName;
+                        }
+                    });
+
+            });
+
+
+
+        });
+
+        $(function () {
+
+            $('input[name="datetimes"]').daterangepicker({
+
+                timePicker: true,
+
+                startDate: moment().startOf('hour'),
+
+                endDate: moment().startOf('hour').add(32, 'hour'),
+
+                ranges: {
+
+                    'Today': [moment(), moment()],
+
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+
+                },
+
+                locale: {
+
+                    format: 'DD/MM/YYYY hh:mm A'
+
+                }
+
+
+            });
+
+
+
+        });
+
+
+
+    </script>
+}

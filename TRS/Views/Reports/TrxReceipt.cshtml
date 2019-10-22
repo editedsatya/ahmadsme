@@ -1,0 +1,212 @@
+﻿@{ 
+    var TrxData = ViewBag.TrxData;
+}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <style>
+
+        p.Small {
+            font-size: 9px /*7px*/;
+            font-family: Arial;
+        }
+
+        p.Medium {
+            font-size: 15px /*9px*/;
+            font-family: Arial;
+        }
+
+        p.Large {
+            font-size: 20px /*14px*/;
+            font-family: Arial;
+        }
+
+        hr {
+            height: 1px;
+            border: none;
+            color: #000;
+            background-color: #000;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+    <div style="border:solid;border-width:thin ; padding:10px">
+
+
+
+        @* --------------------------------Retailer----------------------- *@
+        @* Retailer Logo *@
+        <div align="center">
+            <img >
+        </div>
+
+        @* Retailer Name *@
+        <p align="center" class="Large">Retailer Name En</p>
+        <p align="center" class="Large">Retailer Name Ar</p>
+
+        @* Terminal Street, Terminal City *@
+        <p align="center" class="Small">Terminal Street, Terminal City</p>
+
+        @* Retailer Telephone *@
+        <p align="center" class="Small">Retailer Telephone</p>
+
+
+        @* --------------------------------Performance----------------------- *@
+
+        <div style="overflow: hidden;">
+            @* Start Date *@
+            <p class="Medium" style="float: left">@ViewBag.StartDate </p>
+            @* Start Time *@
+            <p class="Medium" style="float:right">@ViewBag.StartTime</p>
+        </div>
+        <hr>
+
+
+        @* --------------------------------Retailer, Terminal & Txn----------------------- *@
+
+
+
+        @* Bank ID (BID) *@
+        <p class="Small">BankID</p>
+        @* Merchant ID (MID) *@
+        <p class="Small">@ViewBag.MerchantID</p>
+        @* Terminal ID (TID) *@
+        <p class="Small">@ViewBag.TerminalID</p>
+
+        @* Card Acceptor Business Code (MCC) *@
+        <p class="Small">MCC</p>
+        @* Systems Trace Audit Number (STAN) *@
+        <p class="Small">@ViewBag.STAN</p>
+        @* POS Software Version Number *@
+        <p class="Small">@ViewBag.Version</p>
+        @* Retrieval Reference Number (RRN) *@
+        <p class="Small">@ViewBag.RRN</p>
+
+
+        @*Blank Line*@
+        <hr>
+
+
+        @* --------------------------------Transaction ----------------------- *@
+        @* Application Label (APL) *@
+        <div style="overflow: hidden;">
+            <p class="Medium" style="float: right">@ViewBag.SchemaNameAr</p>
+            <p class="Medium" style="float: left">@ViewBag.SchemaNameEn</p>
+        </div>
+
+
+        @* Transaction Type *@
+        <div style="overflow: hidden;">
+            <p class="Medium" style="float: right">@ViewBag.TransactionTypeAr</p>
+            <p class="Medium" style="float: left">@ViewBag.TransactionTypeEn</p>
+        </div>
+
+        <div style="overflow: hidden;">
+            @* PAN *@
+            <p class="Medium" style="float: left">@ViewBag.PAN</p>
+            @* Card Expiry *@
+            <p class="Medium" style="float: right">@ViewBag.CardExpireDate</p>
+        </div>
+        <hr />
+        <div style="overflow: hidden;">
+            @*Amount Lable En*@
+            <p class="Medium" style="float: left">@ViewBag.AmountLableEn</p>
+            @* Amount Lable Ar*@
+            <p class="Medium" style="float: right">@ViewBag.AmountLableAr</p>
+        </div>
+        <div style="overflow: hidden;">
+            @*Amount  En*@
+            <p class="Medium" style="float: left">SAR @ViewBag.Amount</p>
+            @* Amount Ar*@
+            <p class="Medium" style="float: right">@ViewBag.AmountAr ريال</p>
+        </div>
+
+        @*Blank Line*@
+        <br />
+
+        @* --------------------------------Bank & Transaction ----------------------- *@
+        @* Transaction Outcome *@
+        <div style="overflow: hidden;">
+            @*Transaction Outcome  En*@
+            <p class="Medium" style="float: left">@ViewBag.TransactionOutcomeEn</p>
+            @* Transaction Outcome Ar*@
+            <p class="Medium" style="float: right">@ViewBag.TransactionOutcomeAr</p>
+        </div>
+
+        @* Cardholder Verification / Reason for Decline *@
+        <div style="overflow: hidden;">
+            @*CardholderVerification_ReasonforDeclineEn*@
+            <p class="Medium" style="float: left">@ViewBag.CardholderVerification_ReasonforDeclineEn</p>
+            @* CardholderVerification_ReasonforDeclineAr*@
+            <p class="Medium" style="float: right">@ViewBag.CardholderVerification_ReasonforDeclineAr</p>
+        </div>
+
+
+
+
+        @* Signature Line *@
+
+
+        @* Credit/Debit Acknowledgement Confirmation *@
+
+        @*Approval Code Lable*@
+        <div style="overflow: hidden;">
+            @*Approval Code Lable En*@
+            <p class="Medium" style="float: left">APPROVAL CODE</p>
+            @*Approval Code Lable Ar*@
+            <p class="Medium" style="float: right">رمز الموافقة</p>
+        </div>
+
+        @*Approval Code*@
+        <div style="overflow: hidden;">
+            @*Approval Code En*@
+            <p class="Medium" style="float: left">@ViewBag.AuthCode</p>
+            @*Approval Code Ar*@
+            <p class="Medium" style="float: right">@ViewBag.AuthCodeAr</p>
+        </div>
+
+
+        <hr />
+
+        @* --------------------------------Performance  ----------------------- *@
+        @*End Date TIME*@
+        <div style="overflow: hidden;">
+            @* End Date *@
+            <p class="Medium" style="float: left">@ViewBag.EndDate </p>
+            @* End Time *@
+            <p class="Medium" style="float:right">@ViewBag.EndTime</p>
+        </div>
+
+        @* --------------------------------Scheme----------------------- *@
+
+        @* Thank You *@
+        <p class="Small" align="center">شكراً لاستخدامكم مدى </p>
+        <p class="Small" align="center">THANK YOU FOR USING mada</p>
+        @* Record of Transaction *@
+        <p class="Small" align="center">يرجى الاحتفاظ بالإيصال </p>
+        <p class="Small" align="center">PLEASE RETAIN YOUR RECEIPT</p>
+        @* Receipt Version *@
+        <p class="Small" align="center">**نسخة التاجر**</p>
+        <p class="Small" align="center">** RETAILER COPY **</p>
+
+
+        @* -------------------------------- EMV Tags & Issuer Response----------------------- *@
+        @* POS Entry Mode *@
+        <p class="Small" align="left">CONTACTLESS 000 A0000000000000000000000000000000000000000000000000000000003F23234SDFWEW</p>
+
+    </div>
+
+</body>
+</html>
+

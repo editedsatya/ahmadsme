@@ -1,0 +1,73 @@
+﻿@model TRS.Models.Customer
+
+
+@{
+    ViewBag.Title = "Customer Management";
+    if (Model.Id == 0)
+    { ViewBag.SubTitle = "New Customer"; }
+    else
+    { ViewBag.SubTitle = "Modify Customer"; }
+
+}
+
+
+
+
+
+@using (Html.BeginForm("AddOrEdit", "Customer"))
+{
+    @Html.HiddenFor(m => m.Id)
+
+    @Html.AntiForgeryToken()
+
+
+
+
+
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">@ViewBag.SubTitle</h3>
+        </div>
+
+        <div class="box-body">
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+               
+
+            </div>
+        </div>
+        <div class="box-footer">
+
+            <input type="submit" value="Save" class="btn btn-primary" />
+
+
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+
+
+        </div>
+    </div>
+
+
+
+
+}
+
+
