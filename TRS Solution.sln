@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRS", "TRS\TRS.csproj", "{2AD3ACB9-AE01-4AA2-8B82-A06137109700}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{C52ADFE1-17EB-4890-A1C6-443DE02A37D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRS Web Service", "TRS Web Service\TRS Web Service.csproj", "{91C3B9E2-F954-4C07-B9F9-0E0E869BC42F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C52ADFE1-17EB-4890-A1C6-443DE02A37D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C52ADFE1-17EB-4890-A1C6-443DE02A37D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C52ADFE1-17EB-4890-A1C6-443DE02A37D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91C3B9E2-F954-4C07-B9F9-0E0E869BC42F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91C3B9E2-F954-4C07-B9F9-0E0E869BC42F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91C3B9E2-F954-4C07-B9F9-0E0E869BC42F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91C3B9E2-F954-4C07-B9F9-0E0E869BC42F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
