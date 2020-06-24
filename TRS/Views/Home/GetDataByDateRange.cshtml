@@ -1,0 +1,393 @@
+﻿<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+<!-- CSS Files -->
+@*<link href="../assets/css/material-dashboardDemo.css?v=2.1.2" rel="stylesheet" />*@
+<link href="~/DashboardManual.css" rel="stylesheet" />
+<!-- CSS Just for demo purpose, don't include it in your project -->
+<link href="../assets/demo/demo.css" rel="stylesheet" />
+<link href="~/Content/Chart/chart1.1/chartist.min.css" rel="stylesheet" />
+<link href="~/Content/Chart/chart1.2/chartist-plugin-tooltip.css" rel="stylesheet" />
+
+
+@{
+    ViewBag.Title = "Dashboard v1";
+    var TableRecordIndex1 = 1;
+    var TableRecordIndex2 = 1;
+    var TableRecordIndex3 = 1;
+}
+
+<div class="row" style="background-color: #e4e6e8;">
+    <div class="col-lg-3 col-md-6 col-sm-6" style="padding-left: 30px;">
+        <div class="card card-stats" onclick="GetAll();" style="cursor:pointer;padding-bottom: 1px;">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    @*<i class="material-icons">content_copy</i>*@
+                    <b> @Model.AllTranactionCount </b>
+                </div>
+                <p class="card-category">All Transactions </p>
+                <p class="card-category">كل الحركات المالية </p>
+                @*<h3 class="card-title">
+                        49/50
+                        <small>GB</small>
+                    </h3>*@
+            </div>
+            <div class="card-footer" style="background-color: #fc9209;border-radius: 5px;">
+                <div class="stats" style="padding-left: 10px;">
+                    <i class="material-icons">update</i>
+                    @Model.currentDate
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats" onclick="GetApproved();" style="cursor:pointer;padding-bottom: 1px;">
+            <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                    @*<i class="material-icons">store</i>*@
+                    <b>@Model.SuccessTranactionCount</b>
+                </div>
+                <p class="card-category">Successful Transactions</p>
+                <p class="card-category">معاملات النجاح</p>
+                @*<h3 class="card-title">$34,245</h3>*@
+            </div>
+            <div class="card-footer" style="border-radius: 5px; background-color: #58b05c;">
+                <div class="stats" style="padding-left: 10px;">
+                    <i class="material-icons">update</i> @Model.currentDate
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats" style="cursor:pointer;padding-bottom: 1px;" onclick="GetFailed();">
+            <div class="card-header card-header-danger card-header-icon">
+                <div class="card-icon">
+                    @*<i class="material-icons">info_outline</i>*@
+                    <b>@Model.FailedTranactionCount</b>
+                </div>
+                <p class="card-category">Failed Transactions</p>
+                <p class="card-category">المعاملات الفاشلة</p>
+                @*<h3 class="card-title">75</h3>*@
+            </div>
+            <div class="card-footer" style="border-radius: 5px; background-color: #eb4945;">
+                <div class="stats" style="padding-left: 10px;">
+                    <i class="material-icons">update</i> @Model.currentDate
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6" style="padding-right: 30px;">
+        <div class="card card-stats" style="cursor:pointer;padding-bottom: 1px;" onclick="GetSettled();">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    @*<i class="fa fa-twitter"></i>*@
+                    <b>@Model.SelttedTranactionCount</b>
+                </div>
+                <p class="card-category">Settled Transactions</p>
+                <p class="card-category">إجمالي مبلغ المبيعات</p>
+                @*<h3 class="card-title">+245</h3>*@
+            </div>
+            <div class="card-footer" style="border-radius: 5px; background-color: #1ec1d5;">
+                <div class="stats" style="padding-left: 10px;">
+                    <i class="material-icons">update</i> @Model.currentDate
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="background-color: #e4e6e8;margin-top: 20px;">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-left: 30px;" onclick="GetAll();">
+        <div class="info-box bg-pink hover-expand-effect" style="cursor:pointer">
+            <div class="icon">
+                <i class="material-icons">blur_on</i>
+                <p><b style="font-size: 17px;">@Model.AllTranactionCount</b></p>
+            </div>
+            <div class="content">
+                <div class="text">All Transactions</div>
+                <p style="margin-bottom: 1px;">كل الحركات المالية</p>
+                <p> @Model.currentDate</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="GetApproved();">
+        <div class="info-box bg-cyan hover-expand-effect" style="cursor:pointer">
+            <div class="icon">
+                <i class="material-icons">blur_on</i>
+                <p><b style="font-size: 17px;">@Model.SuccessTranactionCount</b></p>
+            </div>
+            <div class="content">
+                <div class="text">Successful Transactions</div>
+                <p style="margin-bottom: 1px;">معاملات النجاح</p>
+                <p> @Model.currentDate</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" onclick="GetFailed();">
+        <div class="info-box bg-light-green hover-expand-effect" style="cursor:pointer">
+            <div class="icon">
+                <i class="material-icons">blur_on</i>
+                <p><b style="font-size: 17px;">@Model.FailedTranactionCount</b></p>
+            </div>
+            <div class="content">
+                <div class="text">Failed Transactions</div>
+                <p style="margin-bottom: 1px;">المعاملات الفاشلة</p>
+                <p> @Model.currentDate</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-right: 30px;" onclick="GetSettled();">
+        <div class="info-box bg-orange hover-expand-effect" style="cursor:pointer">
+            <div class="icon">
+                <i class="material-icons">blur_on</i>
+                <p><b style="font-size: 17px;">@Model.SelttedTranactionCount</b></p>
+            </div>
+            <div class="content">
+                <div class="text">Settled Transactions</div>
+                <p style="margin-bottom: 1px;">إجمالي مبلغ المبيعات</p>
+                <p> @Model.currentDate</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-left:30px">
+        @*<div class="white-box">
+                <div id="chartContainer" style="padding-left: 17px;height: 300px; width: 100%;"></div>
+            </div>*@
+
+        <div class="info-box" style="border-radius: 6px;">
+            <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Sales&nbsp; (@Model.currentDate)</span>
+                <span class="info-box-number">@Model.TotalSaleAMount</span>
+            </div>
+        </div>
+
+        <div class="info-box bg-orange">
+            <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Branch</span>
+                <span class="info-box-number"> @Model.Branch </span>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 50%"></div>
+                </div>
+                @*<span class="progress-description">
+                        50% Increase in 30 Days
+                    </span>*@
+            </div>
+        </div>
+
+        <div class="info-box bg-green-gradient hover-expand-effect" style="cursor:pointer">
+            <div class="icon">
+                <i class="material-icons">attach_money</i>
+                <p><b style="font-size: 17px;">@Model.SelttedTranactionCount</b></p>
+            </div>
+            <div class="content">
+                <div class="text">Settled Transactions</div>
+                <p style="margin-bottom: 1px;">إجمالي مبلغ المبيعات</p>
+                <p> @Model.currentDate</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="padding-right:30px;border-radius: 8px;">
+        <div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-left:30px;padding-right:30px">
+
+        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="SuucessTranactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top:0px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="border-radius: 10px;">
+            <div class="modal-header" style="text-align: center;">
+                <h4>Success Transactions </h4>
+                <h4>معاملات النجاح </h4>
+            </div>
+            <div class="modal-body" id="modelHisoryBody" style="padding:0px 15px;">
+                <div id="mdbody" class="scroll">
+                    <table class="table">
+                        <thead style="background-color: peachpuff;">
+                            <tr>
+                                <th>Sr no</th>
+                                <th>Terminal ID</th>
+                                <th>RRN</th>
+                                <th>Amount</th>
+                                <th>Response Code</th>
+                            </tr>
+                        </thead>
+                        <tbody style="background: lavender;">
+                            @foreach (var m in Model._Success)
+                            {
+                                <tr>
+                                    <td>@TableRecordIndex1.ToString("d2")</td>
+                                    <td>@m.TID</td>
+                                    <td>@m.RRN</td>
+                                    <td>@m.Amount</td>
+                                    <td>@m.RespCode</td>
+                                </tr>
+                                TableRecordIndex1++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: #fff;margin-right: 11px;background-color: #3c8dbc;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="FailedTranactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top:0px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="border-radius: 10px;">
+            <div class="modal-header" style="text-align: center;">
+                <h4>Failed Transactions </h4>
+                <h4>المعاملات الفاشلة </h4>
+            </div>
+            <div class="modal-body" id="modelHisoryBody" style="padding:0px 15px;">
+                <div id="mdbody" class="scroll">
+                    <table class="table">
+                        <thead style="background-color: peachpuff;">
+                            <tr>
+                                <th>Sr no</th>
+                                <th>Terminal ID</th>
+                                <th>RRN</th>
+                                <th>Amount</th>
+                                <th>Response Code</th>
+                            </tr>
+                        </thead>
+                        <tbody style="background: lavender;">
+                            @foreach (var m in Model._Failed)
+                            {
+                                <tr>
+                                    <td>@TableRecordIndex2.ToString("d2")</td>
+                                    <td>@m.TID</td>
+                                    <td>@m.RRN</td>
+                                    <td>@m.Amount</td>
+                                    <td>@m.RespCode</td>
+                                </tr>
+                                TableRecordIndex2++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: #fff;margin-right: 11px;background-color: #3c8dbc;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AllTranactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top:0px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="border-radius: 10px;">
+            <div class="modal-header" style="text-align: center;">
+                <h4>All Transactions </h4>
+                <h4>كل الحركات المالية </h4>
+            </div>
+            <div class="modal-body" id="modelHisoryBody" style="padding:0px 15px;">
+                <div id="mdbody" class="scroll">
+                    <table class="table">
+                        <thead style="background-color: peachpuff;">
+                            <tr>
+                                <th>Sr no</th>
+                                <th>Terminal ID</th>
+                                <th>RRN</th>
+                                <th>Amount</th>
+                                <th>Response Code</th>
+                            </tr>
+                        </thead>
+                        <tbody style="background: lavender;">
+                            @foreach (var m in Model._All)
+                            {
+                                <tr>
+                                    <td>@TableRecordIndex3.ToString("d2")</td>
+                                    <td>@m.TID</td>
+                                    <td>@m.RRN</td>
+                                    <td>@m.Amount</td>
+                                    <td>@m.RespCode</td>
+                                </tr>
+                                TableRecordIndex3++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: #fff;margin-right: 11px;background-color: #3c8dbc;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+<script src="~/AdminLTE/plugins/chartjs/js/chart.min.js"></script>
+ 
+<script>
+
+       
+        var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title: {
+		text: "Sales Over a Month"
+	},
+	axisX: {
+		valueFormatString: "DD MMM"
+	},
+	axisY: {
+		title: "Sales (in INR)",
+		prefix: "INR ",
+		includeZero: false
+	},
+	data: [{
+		type: "spline",
+		xValueType: "dateTime",
+		xValueFormatString: "DD MMM",
+        yValueFormatString: "#,###",
+        dataPoints: @Html.Raw(ViewBag.Points),
+	}]
+});
+chart.render();
+
+
+            var chart2 = new CanvasJS.Chart("chartContainer2", {
+                animationEnabled: true,
+                title: {
+                    text: "Schema Name (@Model.currentDate)",
+                    horizontalAlign: "left"
+                },
+                data: [{
+                    type: "doughnut",
+                    startAngle: 60,
+                    //innerRadius: 60,
+                    indexLabelFontSize: 17,
+                    indexLabel: "{label} - #percent%",
+                    toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                    dataPoints: [
+                        { y: @Model.MADA, label: "mada" },
+                        { y: @Model.VISA, label: "VISA" },
+                        { y: @Model.VISACredit, label: "VISA Credit" },
+                        { y: @Model.VISADebit, label: "VISA Debit" },
+                        //{ y: 0, label: "Test1" },
+                        //{ y: 0, label: "Test2" }
+                    ]
+                }]
+            });
+            chart2.render();
+   
+        $.widget.bridge('uibutton', $.ui.button);
+</script>

@@ -384,7 +384,11 @@
 
                 var children = node.children;
 
-                var li = document.createElement('li');                
+                var chk = $('<input value="" type="checkbox" onclick="" class="" id="chkBranches">');
+                var i = $('<i class="fa fa-search"></i>');
+                var li = document.createElement('li');
+                li.className = 'sac-node-collapsed';
+                //chk.appendTo(li);
                 var arrow = $('<span class="toggleNodeCollapse"><i class="fa fa-caret-right"></i><i class="fa fa-caret-down"></i></span>');
                 var liSpan = document.createElement('span');
                 
@@ -408,6 +412,7 @@
                     }
                 }
                 var selClass = (itemSelected === true || nodeSelected === true) ? 'sac-node-selected' : '';
+                var selattr = (itemSelected === true || nodeSelected === true) ? i : '';
                 liSpan.className = 'sac-node-name sac-noselect ' + selClass;
 
                  //Added by ahmed 27/08/2019
@@ -417,7 +422,8 @@
 
                 if (children && Array.isArray(children) && children.length > 0 && $that.opt.collapseNodes === true) {
                     li.appendChild(arrow[0]);    
-                }                
+                }
+                //li.appendChild(chk);
                 li.appendChild(liSpan);
 
                 // Get children

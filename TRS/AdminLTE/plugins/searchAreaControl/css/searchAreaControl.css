@@ -128,8 +128,18 @@ ul:not(.sac-ul-top) .sac-node-name.sa-selected-item:before,
 .sac-node-selected:before {
     content: "\e013";
     font-family: 'Glyphicons Halflings';
-    position:absolute;    
-    color:#13a562;
+    /*position:absolute;*/
+    display: inline;
+    color: #13a562;
+    /*content: "";
+    border: 2px solid red;
+    padding: 10px;
+    border-radius: 25px;*/
+    /*height: 10px;
+    width: 10px;
+    background-color: green;
+    border-radius: 50%;
+    display: inline-block;*/
 }
 
 .sac-nodes-fixed ul:not(.sac-ul-top) .sac-node-name.sa-selected-item:before,
@@ -212,6 +222,9 @@ ul:not(.sac-ul-top) .sac-node-name.sa-selected-item:before,
     margin-right: 5px;
 }
 
+
+
+
 /* Searching classes ----------------------------------------------------------- */
 
 .sac-found-item > span { background-color: yellowgreen }
@@ -231,3 +244,5 @@ ul:not(.sac-ul-top) .sac-node-name.sa-selected-item:before,
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+

@@ -79,7 +79,30 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="ReceiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top:0px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fa fa-download" style="cursor: pointer;" onclick="window.print();" title="Download"></i>
+                <span style="font-size: 16px;font-weight: bold;margin-left: 401px" class="modal-title" id="exampleModalLabel">Receipt</span>
 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" title="Close">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body" id="modelHisoryBody" style="padding:0px 15px;">
+                <div id="mdbody">
+                    @*@{Html.RenderPartial("PrintRecipt");}*@
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: #fff;background-color: #3c8dbc;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -145,12 +168,15 @@
                 },
                 "columns": [
                     { "data": "TID", "name": "TID", "autoWidth": true },
-                    { "data": "DateTime", "autoWidth": true },
-                    { "data": "STAN", "autoWidth": true },
-                    { "data": "STATUS", "autoWidth": true },
+                    { "data": "DateTime", "name": "StartDateTime", "autoWidth": true },
+                    { "data": "STAN", "name": "STAN", "autoWidth": true },
+                    { "data": "STATUS", "name": "ReconType", "autoWidth": true },
                     {
                         "data": "TID", "render": function (data) {
-                            return "<a class='btn btn-success btn-sm' ><i class='fa fa-download'></i> E-Recipt </a>";
+                            //return "<a class='btn btn-success btn-sm' ><i class='fa fa-download'></i> E-Recipt </a>";
+
+                            var myUrl = '@Url.Action("PrintRecipt", "Reports")?RRN=' + data;
+                            return "<span class='btn btn-success btn-sm' onclick='getReceipt(" + data + ")'>E-Recipt </span>";
                         },
                         "orderable": false,
                         "searchable": false,
@@ -242,7 +268,11 @@
 
         });
 
+        function getReceipt(id) {
 
+            $("#mdbody").load('/Reports/PrintReconcilationRecipt?Id=' + id);
+            $("#ReceiptModal").modal("show");
+        };
 
     </script>
 }

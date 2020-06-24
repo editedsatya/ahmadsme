@@ -54,7 +54,7 @@ namespace TRS.Models
 
 
             }
-            catch (Exception /*ex*/)
+            catch (Exception ex)
             {
                 dt = null;
                 if (con.State == ConnectionState.Open)
@@ -80,7 +80,55 @@ namespace TRS.Models
         }
 
 
+        public DataSet Pro_GetAlLTransaction(SqlParameter[] parm = null, bool InitialRowNull = false)
+        {
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("Pro_getAllTrasactionsByDay", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet dts = new DataSet();
+            try
+            {
 
+                if (parm != null)
+                {
+
+                    da.SelectCommand.Parameters.AddRange(parm);
+
+                }
+                da.Fill(dts);
+                //if (dts.Tables.Count == 0 && InitialRowNull)
+                //{
+                //    dts.Tables.Add(dts.ta);
+                //}
+                da.SelectCommand.Parameters.Clear();
+
+
+            }
+            catch (Exception ex)
+            {
+                dts = null;
+                if (con.State == ConnectionState.Open)
+                    con.Close();
+
+            }
+            finally
+            {
+                if (con != null)
+                    if (con.State == ConnectionState.Open) con.Close();
+
+
+                con.Dispose();
+                da.Dispose();
+
+                //if (da.SelectCommand != null)
+                //    da.SelectCommand.Dispose();
+            }
+
+            return dts;
+
+
+        }
     }
 
 }

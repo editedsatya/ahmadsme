@@ -1,0 +1,419 @@
+﻿@{
+    ViewBag.Title = "Reports";
+    ViewBag.SubTitle = "Reconciliations Total Details";
+}
+
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+
+@*@Styles.Render("~/AdminLTE/plugins/daterangepicker/css")*@
+
+
+<link href="~/Content/daterangepicker.css" rel="stylesheet" />
+<link href="~/AdminLTE/plugins/searchAreaControl/css/searchAreaControl.css" rel="stylesheet" />
+
+@{
+    List<string> columnList = new List<string>();
+
+    columnList.Add("TID");
+    columnList.Add("SchemaID");
+    columnList.Add("TotalType");
+    columnList.Add("StartDateTime");
+    columnList.Add("DebitAmount");
+    columnList.Add("DebitCount");
+    columnList.Add("CreditAmount");
+
+ }
+
+<style>
+
+
+    #ddlColumnFilter {
+        left: auto !important;
+        right: 9px;
+        height: 204px;
+        overflow-y: auto;
+    }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+        .topSettingIcons button:hover {
+            background-color: #008564;
+            color: #fff;
+        }
+
+    .topSettingIcons.open .dropdown-menu {
+        display: block;
+        padding: 5px;
+        min-width: 0px;
+    }
+    .dropdown-menu {
+        min-width: 0px;
+    }
+
+        .topSettingIcons.open .dropdown-menu .dropdown-item {
+            display: block;
+            padding: 2px 5px;
+            color: #333;
+            margin-top: 1px;
+            /*min-width: 165px;*/
+        }
+
+            .topSettingIcons.open .dropdown-menu .dropdown-item:not(.top-view-item):hover, .dropdown-menu.in-table li:not(.top-view-item):hover {
+                background-color: #cfe7e1;
+            }
+
+    .topSettingIcons span.caret {
+        border-top: 10px dashed;
+        border-right: 6px solid transparent;
+        border-left: 6px solid transparent;
+    }
+
+    .icon-box .topSettingIcons {
+        background-color: transparent;
+    }
+
+    .dropdown {
+        padding-bottom: 0px !important;
+    }
+
+    .input-group-btn .btn-group {
+        display: flex !important;
+    }
+
+    .input-group .form-control, .input-group-addon, .input-group-btn {
+        display: list-item;
+        width: 100%;
+    }
+
+    #selectedSearchFilter {
+        font-size: 14px;
+        line-height: 32px !important;
+        display: inline-block;
+        padding-right: 6px;
+        color: rgb(102,102,102);
+        padding: 0px 5px;
+        min-width: 101px;
+        max-width: 200px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        border: 1px solid #bababa !important;
+    }
+
+    .topSettingIcons {
+        padding: 0px !important;
+        float: right;
+        margin-right: 0px !important;
+        display: inline-flex;
+        height: 33px;
+    }
+
+        .topSettingIcons button {
+            padding: 0px !important;
+            height: 33px;
+            width: 16px;
+            font-size: 22px;
+            background-color: #367fa9;
+            color: #fff;
+        }
+</style>
+
+
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">Filter</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-6">
+                @*<button id="myButton" type="button" value="Terminal" />*@
+                <button type="button" id="myButton" class="btn btn-primary">Terminal</button>
+            </div>
+            <div class="col-md-6">
+
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-6 form-group">
+                <label for="datetimes">Reconciliation Date Time Range</label>
+                <input type="text" class="form-control" id="datetimes" name="datetimes">
+            </div>
+            @*input-sm*@
+            <div class="col-sm-6  form-group">
+                @*<input type="text" class="form-control" id="Search" name="Search" placeholder="Search by TID,CreditAmount,DebitAmount... ">*@
+                    <label for="Search">Search</label>
+                    <div class="input-custom-group dropdown dropdown-lg topSettingIcons" style="width: 100%;">
+                        <input type="text" class="form-control" id="Search" name="Search" placeholder="Search..."/>
+                        <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
+                    
+                                <span id="selectedSearchFilter" style="border-radius: 4px;">TID</span>
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </button>
+                                <div class="dropdown-menu" id="ddlColumnFilter">
+                                    <a onclick="filteredChange(this)" data-val="" class="dropdown-item" href="#"></a>
+                                    @foreach (var m in columnList)
+                                    {
+                                        <a onclick="filteredChange(this)" data-val="@m" class="dropdown-item" href="#">@m</a>
+                                    }
+                                </div>
+                    </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button type="button" value="ReconciliationsReport" id="btnReconciliationsReport" class="btn btn-success pull-left">Reconciliations Report &nbsp;<i class="fa fa-file-excel-o"></i></button>
+            <button type="button" value="Search" id="btnSearch" class="btn btn-success pull-right">Search &nbsp;<i class="fa fa-search"></i></button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    @*heder items*@
+                </div>
+                <div class="box-body">
+
+                    <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>TID</th>
+                                <th>Date Time</th>
+                                <th>ReconType </th>
+                                <th>SchemaID</th>
+                                <th>TotalType</th>
+                                <th>DebitAmount</th>
+                                <th>DebitCount</th>
+                                <th>CreditAmount</th>
+                                <th>CreditCount</th>
+                                <th>CashBackAmount</th>
+                                <th>CashAdvanceAmount</th>
+                                <th>AuthorisationCount</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ReceiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top:0px;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fa fa-download" style="cursor: pointer;" title="Download"></i>
+                    <span style="font-size: 16px;font-weight: bold;margin-left: 401px" class="modal-title" id="exampleModalLabel">Receipt</span>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" title="Close">&times;</span>
+                    </button>
+
+                </div>
+                <div class="modal-body" id="modelHisoryBody" style="padding:0px 15px;">
+                    <div id="mdbody">
+                        @*@{Html.RenderPartial("PrintRecipt");}*@
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: #fff;background-color: #3c8dbc;">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @section Scripts{
+
+
+
+        @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+
+
+
+
+        @* load datetimepicker range *@
+        <script src="~/Scripts/moment.min.js"></script>
+        <script src="~/Scripts/daterangepicker.js"></script>
+
+
+        <script src="~/AdminLTE/plugins/searchAreaControl/js/searchAreaControl.js"></script>
+
+
+        <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $.ajax({
+                type: 'get',
+                dataType: 'json',
+                cache: false,
+                url: '/Reports/GetHierarchy',
+
+                success: function (records, textStatus, jqXHR) {
+                    $('#myButton').searchAreaControl({
+                        data: records,
+                        collapseNodes: true,
+
+                        mainButton: {
+                            defaultText: 'Terminal'
+                        }
+                    });
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Error - ' + errorThrown);
+                }
+            });
+
+
+
+            var oTable = $("#myTable").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true,  // this is for Enable/disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "dom": '<"top"i>rt<"bottom"lp><"clear">', // for checnge datatable controls positions
+
+                "ajax": {
+                    "url": "/Reports/LoadReconciliationsTotalReport",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "TID", "name": "TID", "autoWidth": true },
+                    { "data": "StartDateTime", "name": "StartDateTime", "autoWidth": true },
+                    { "data": "ReconType", "name": "ReconType", "autoWidth": true },
+                    { "data": "SchemaID", "name": "SchemaID", "autoWidth": true },
+                    { "data": "TotalType", "name": "TotalType", "autoWidth": true },
+                    { "data": "DebitAmount", "name": "DebitAmount", "autoWidth": true },
+                    { "data": "DebitCount", "name": "DebitCount", "autoWidth": true },
+                    { "data": "CreditAmount", "name": "CreditAmount", "autoWidth": true },
+                    { "data": "CreditCount", "name": "CreditCount", "autoWidth": true },
+                    { "data": "CashBackAmount", "name": "CashBackAmount", "autoWidth": true },
+                    { "data": "CashAdvanceAmount", "name": "CashAdvanceAmount", "autoWidth": true },
+                    { "data": "AuthorisationCount", "name": "AuthorisationCount", "autoWidth": true },
+                    @*{
+                        "data": "TID", "render": function (data) {
+                            //return "<a class='btn btn-success btn-sm' ><i class='fa fa-download'></i> E-Recipt </a>";
+
+                            var myUrl = '@Url.Action("PrintRecipt", "Reports")?RRN=' + data;
+                            return "<span class='btn btn-success btn-sm' onclick='getReceipt(" + data + ")'>E-Recipt </span>";
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "75px"
+                    }*@
+
+                ]
+            });
+
+            $('#btnSearch').click(function () {
+                //Apply search for daterange // DataTable column index 0
+                oTable.columns(0).search($('#datetimes').val().trim());
+
+                //Apply search for general Search // DataTable column index 3
+                oTable.columns(1).search($('#Search').val().trim());
+
+                var checkedIds = $('#myButton').searchAreaControl('getSelectedByAttribute', 'key');
+
+                oTable.columns(2).search(checkedIds);
+
+                //Column name find
+                oTable.columns(3).search($('#selectedSearchFilter').text().trim());
+                //hit search on server
+                oTable.draw();
+
+            });
+
+            $('#btnReconciliationsReport').click(function () {
+
+                var checkedIds = $('#myButton').searchAreaControl('getSelectedByAttribute', 'key');
+                $.ajax(
+                    {
+                        type: 'POST', //HTTP POST Method
+                        url: "/Reports/ReconciliationsTotalReport", // Controller/View
+                        dataType: "json",
+                        cache: false,
+                        data: { //Passing data
+                            TIDS: checkedIds.join(), //Reading text box values using Jquery
+                            DateRange: $("#datetimes").val().trim()
+                        },
+                        success: function (Data) {
+                            //  var response = JSON.parse(Data);
+                            window.location = '/Reports/Download?fileGuid=' + Data.FileGuid
+                                + '&filename=' + Data.FileName;
+                        }
+                    });
+
+            });
+
+
+
+        });
+
+        $(function () {
+
+            $('input[name="datetimes"]').daterangepicker({
+
+                timePicker: true,
+
+                startDate: moment().startOf('hour'),
+
+                endDate: moment().startOf('hour').add(32, 'hour'),
+
+                ranges: {
+
+                    'Today': [moment(), moment()],
+
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+
+                },
+
+                locale: {
+
+                    format: 'DD/MM/YYYY hh:mm A'
+
+                }
+
+
+            });
+
+
+
+        });
+
+        function getReceipt(id) {
+
+            $("#mdbody").load('/Reports/PrintReconcilationRecipt?Id=' + id);
+            $("#ReceiptModal").modal("show");
+            };
+
+
+            function filteredChange(obj) {
+                FilteredColumn = $(obj).data("val").trim();
+                $("#selectedSearchFilter").text($(obj).text());
+                $("#ddlColumnFilter a").removeClass("active");
+                $(obj).addClass("active")
+            }
+
+        </script>
+    }

@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Reso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRS Web Service", "TRS Web Service\TRS Web Service.csproj", "{91C3B9E2-F954-4C07-B9F9-0E0E869BC42F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB_Scripts", "DB_Scripts", "{04236103-4CC1-40BA-8593-1D76108DA8E2}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\ahmad\Documents\TRS_DB_Script.sql = C:\Users\ahmad\Documents\TRS_DB_Script.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

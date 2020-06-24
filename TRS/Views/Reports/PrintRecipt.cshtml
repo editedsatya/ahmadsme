@@ -13,7 +13,7 @@
     @*<title>TRS</title>*@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
- 
+
     @Styles.Render("~/AdminLTE/bootstrap/css")
     @Styles.Render("~/AdminLTE/dist/css")
     @*@Styles.Render("~/AdminLTE/dist/css/skins")*@
@@ -24,9 +24,9 @@
         .receipt {
             position: relative;
             background: #fff;
-            border: 1px solid #f4f4f4;
+            border: 3px solid #000 /*#f4f4f4*/;
             padding: 20px;
-            margin: 10px 25px;
+           /*margin: 10px 10px;*/
         }
 
 
@@ -38,152 +38,149 @@
         .Medium {
             font-size: 15px /*9px*/;
             font-family: Arial;
-            
         }
-        .Bold{
-          
-            font-weight:bold;
+
+        .Bold {
+            font-weight: bold;
         }
+
         .Large {
             font-size: 20px /*14px*/;
             font-family: Arial;
         }
-         
+
         .NewLine {
             padding-bottom: 5px;
-            margin-bottom: 10px ; 
+            margin-bottom: 10px;
             border-bottom: 0.5px solid #000;
         }
-
     </style>
 
 </head>
-<body onload="window.print();">
+<body @*onload="window.print();"*@>
 
 
-   
+    <div class="wrapper" style="border-radius: 5px">
 
-        <div class="wrapper">
-                       
-            <section class="receipt">
-
-
-
-                @* --------------------------------Retailer----------------------- *@
-
-                @* Retailer Name *@
-                <p align="center" class="Large">Retailer Name En</p>
-                <p align="center" class="Large">Retailer Name Ar</p>
-
-                @* Terminal Street, Terminal City *@
-                <p align="center" class="Small">Terminal Street, Terminal City</p>
-
-                @* Retailer Telephone *@
-                <p align="center" class="Small">Retailer Telephone</p>
-
-
-                @* --------------------------------Performance----------------------- *@
-
-                <div class="row NewLine">
-                    <p class="col-xs-6 Medium">@ViewBag.StartDate</p>
-                    <p class="col-xs-6 text-right Medium">@ViewBag.StartTime</p>
-                </div>
+        <section class="receipt">
 
 
 
+            @* --------------------------------Retailer----------------------- *@
 
-                @* --------------------------------Retailer, Terminal & Txn----------------------- *@
+            @* Retailer Name *@
+            <p align="center" class="Large">Retailer Name En</p>
+            <p align="center" class="Large">Retailer Name Ar</p>
 
-                <div class="row NewLine">
-                    @* Bank ID (BID) *@
-                    <p class="col-xs-12 Small">BankID</p>
-                    @* Merchant ID (MID) *@
-                    <p class="col-xs-12 Small">@ViewBag.MerchantID</p>
-                    @* Terminal ID (TID) *@
-                    <p class="col-xs-12 Small">@ViewBag.TerminalID</p>
+            @* Terminal Street, Terminal City *@
+            <p align="center" class="Small">Terminal Street, Terminal City</p>
 
-                    @* Card Acceptor Business Code (MCC) *@
-                    <p class="col-xs-12 Small">MCC</p>
-                    @* Systems Trace Audit Number (STAN) *@
-                    <p class="col-xs-12 Small">@ViewBag.STAN</p>
-                    @* POS Software Version Number *@
-                    <p class="col-xs-12 Small">@ViewBag.Version</p>
-                    @* Retrieval Reference Number (RRN) *@
-                    <p class="col-xs-12 Small">@ViewBag.RRN</p>
-                </div>
+            @* Retailer Telephone *@
+            <p align="center" class="Small">Retailer Telephone</p>
 
 
+            @* --------------------------------Performance----------------------- *@
 
-                @* --------------------------------Transaction ----------------------- *@
-
-                <div class="row NewLine">
-                    @* Application Label (APL) *@
-                    <p class="col-xs-6 Medium Bold">@ViewBag.SchemaNameEn</p>
-                    <p class="col-xs-6 text-right Medium Bold">@ViewBag.SchemaNameAr</p>
-
-                    @* Transaction Type *@
-                    <p class="col-xs-6 Medium">@ViewBag.TransactionTypeEn</p>
-                    <p class="col-xs-6 text-right Medium">@ViewBag.TransactionTypeAr <br /></p>
-
-
-                    @* PAN *@  @* Card Expiry *@
-                    <p class="col-xs-6 Medium">@ViewBag.PAN</p>
-                    <p class="col-xs-6 text-right Medium">@ViewBag.CardExpireDate</p>
-
-                </div>
-
-
-
-                <div class="row NewLine">
-                    @*Amount Lable En*@
-                    <p class="col-xs-6 Medium Bold">@ViewBag.AmountLableEn</p>
-                    @* Amount Lable Ar*@
-                    <p class="col-xs-6 text-right Medium Bold" >@ViewBag.AmountLableAr</p>
-
-                    @*Amount  En*@
-                    <p class="col-xs-6 Large Bold">SAR @ViewBag.Amount</p>
-                    @* Amount Ar*@
-                    <p class="col-xs-6 text-right Large Bold">@ViewBag.AmountAr ريال<br /></p>
-
-                    @* --------------------------------Bank & Transaction ----------------------- *@
-                    @*Transaction Outcome  En*@
-                    <p class="col-xs-6 Medium Bold">@ViewBag.TransactionOutcomeEn</p>
-                    @* Transaction Outcome Ar*@
-                    <p class="col-xs-6 text-right Medium Bold">@ViewBag.TransactionOutcomeAr</p>
-
-
-                    @*CardholderVerification_ReasonforDeclineEn*@
-                    <p class="col-xs-6 Medium">@ViewBag.CardholderVerification_ReasonforDeclineEn</p>
-                    @* CardholderVerification_ReasonforDeclineAr*@
-                    <p class="col-xs-6 text-right Medium">@ViewBag.CardholderVerification_ReasonforDeclineAr</p>
-
-
-
-                    @* Signature Line *@
-
-
-                    @* Credit/Debit Acknowledgement Confirmation *@
-
-
-                    @*Approval Code Lable En*@
-                    <p class="col-xs-6 Medium Bold">APPROVAL CODE</p>
-                    @*Approval Code Lable Ar*@
-                    <p class="col-xs-6 text-right Medium Bold">رمز الموافقة</p>
-
-
-
-                    @*Approval Code En*@
-                    <p class="col-xs-6 Medium">@ViewBag.AuthCode</p>
-                    @*Approval Code Ar*@
-                    <p class="col-xs-6 text-right Medium">@ViewBag.AuthCodeAr</p>
-
-                </div>
+            <div class="row NewLine">
+                <p class="col-xs-6 Medium">@ViewBag.StartDate</p>
+                <p class="col-xs-6 text-right Medium">@ViewBag.StartTime</p>
+            </div>
 
 
 
 
-                @* --------------------------------Performance  ----------------------- *@
-                @*End Date TIME*@
+            @* --------------------------------Retailer, Terminal & Txn----------------------- *@
+
+            <div class="row NewLine">
+                @* Bank ID (BID) *@
+                <p class="col-xs-12 Small">BankID</p>
+                @* Merchant ID (MID) *@
+                <p class="col-xs-12 Small">@ViewBag.MerchantID</p>
+                @* Terminal ID (TID) *@
+                <p class="col-xs-12 Small">@ViewBag.TerminalID</p>
+
+                @* Card Acceptor Business Code (MCC) *@
+                <p class="col-xs-12 Small">MCC</p>
+                @* Systems Trace Audit Number (STAN) *@
+                <p class="col-xs-12 Small">@ViewBag.STAN</p>
+                @* POS Software Version Number *@
+                <p class="col-xs-12 Small">@ViewBag.Version</p>
+                @* Retrieval Reference Number (RRN) *@
+                <p class="col-xs-12 Small">@ViewBag.RRN</p>
+            </div>
+
+
+
+            @* --------------------------------Transaction ----------------------- *@
+
+            <div class="row NewLine">
+                @* Application Label (APL) *@
+                <p class="col-xs-6 Medium Bold">@ViewBag.SchemaNameEn</p>
+                <p class="col-xs-6 text-right Medium Bold">@ViewBag.SchemaNameAr</p>
+
+                @* Transaction Type *@
+                <p class="col-xs-6 Medium">@ViewBag.TransactionTypeEn</p>
+                <p class="col-xs-6 text-right Medium">@ViewBag.TransactionTypeAr <br /></p>
+
+
+                @* PAN *@  @* Card Expiry *@
+                <p class="col-xs-6 Medium">@ViewBag.PAN</p>
+                <p class="col-xs-6 text-right Medium">@ViewBag.CardExpireDate</p>
+
+            </div>
+
+
+
+            <div class="row NewLine">
+                @*Amount Lable En*@
+                <p class="col-xs-6 Medium Bold">@ViewBag.AmountLableEn</p>
+                @* Amount Lable Ar*@
+                <p class="col-xs-6 text-right Medium Bold">@ViewBag.AmountLableAr</p>
+
+                @*Amount  En*@
+                <p class="col-xs-6 Large Bold">SAR @ViewBag.Amount</p>
+                @* Amount Ar*@
+                <p class="col-xs-6 text-right Large Bold">@ViewBag.AmountAr ريال<br /></p>
+
+                @* --------------------------------Bank & Transaction ----------------------- *@
+                @*Transaction Outcome  En*@
+                <p class="col-xs-6 Medium Bold">@ViewBag.TransactionOutcomeEn</p>
+                @* Transaction Outcome Ar*@
+                <p class="col-xs-6 text-right Medium Bold">@ViewBag.TransactionOutcomeAr</p>
+
+
+                @*CardholderVerification_ReasonforDeclineEn*@
+                <p class="col-xs-6 Medium">@ViewBag.CardholderVerification_ReasonforDeclineEn</p>
+                @* CardholderVerification_ReasonforDeclineAr*@
+                <p class="col-xs-6 text-right Medium">@ViewBag.CardholderVerification_ReasonforDeclineAr</p>
+
+
+
+                @* Signature Line *@
+
+
+                @* Credit/Debit Acknowledgement Confirmation *@
+
+
+                @*Approval Code Lable En*@
+                <p class="col-xs-6 Medium Bold">APPROVAL CODE</p>
+                @*Approval Code Lable Ar*@
+                <p class="col-xs-6 text-right Medium Bold">رمز الموافقة</p>
+
+
+
+                @*Approval Code En*@
+                <p class="col-xs-6 Medium">@ViewBag.AuthCode</p>
+                @*Approval Code Ar*@
+                <p class="col-xs-6 text-right Medium">@ViewBag.AuthCodeAr</p>
+
+            </div>
+
+
+
+
+            @* --------------------------------Performance  ----------------------- *@
+            @*End Date TIME*@
             <div class="row">
                 @* End Date *@
                 <p class="col-xs-6 Medium">@ViewBag.EndDate </p>
@@ -207,13 +204,11 @@
                 <p class="col-xs-12 Small" align="left">@ViewBag.EntryMode &ensp; @ViewBag.RespCode &ensp; @ViewBag.LeapInfo</p>
             </div>
 
-               
-
-            </section>
-
-        </div>
 
 
+        </section>
+
+    </div>
 </body>
 </html>
 

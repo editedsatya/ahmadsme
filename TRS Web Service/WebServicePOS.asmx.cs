@@ -17,10 +17,10 @@ namespace TRS_Web_Service
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-  
 
-        public class WebServicePOS : System.Web.Services.WebService
-        {
+
+    public class WebServicePOS : System.Web.Services.WebService
+    {
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -81,8 +81,8 @@ namespace TRS_Web_Service
                         returnParameter.Direction = System.Data.ParameterDirection.ReturnValue;
                         command.ExecuteNonQuery();
 
-                       // returnParameter.Value;
-                        if ((int)returnParameter.Value==0)
+                        // returnParameter.Value;
+                        if ((int)returnParameter.Value == 0)
                         {
 
                             Result = "000";

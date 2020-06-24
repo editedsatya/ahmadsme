@@ -52,7 +52,7 @@
 
         </div>
 
-       
+
 
     </div>
     <div class="box-footer">
@@ -91,6 +91,37 @@
 </div>
 
 
+<div class="modal fade" id="ReceiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top:0px;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="width: 500px;margin-left: 200px">
+            <div class="modal-header">
+                @using (Html.BeginForm("pdfGenerator", "Reports", FormMethod.Post, new { target = "_blank" }))
+                {
+                    <button type="submit" class="btn btn-primary" id="download" style="margin-left:8px;"><span class="fa fa-download" aria-hidden="true" title="dowload"></span></button>
+                    @*<i class="fa fa-download" style="cursor: pointer;" title="Download" onclick="Printd()"></i>*@
+
+                    <span style="font-size: 16px;font-weight: bold;margin-left: 154px" class="modal-title" id="exampleModalLabel">Receipt</span>
+                    <input type="hidden" name="hdn_rrnID" id="hdn_rrnID" value="" />
+                    @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" title="Close">&times;</span>
+                        </button>*@
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: #fff;margin-left: 142px;background-color: #3c8dbc;">Close</button>
+
+                }
+            </div>
+            <div class="modal-body" id="modelHisoryBody" style="padding:0px 15px;">
+                <div id="mdbody">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: #fff;margin-right: 11px;background-color: #3c8dbc;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -115,17 +146,23 @@
 
         $(document).ready(function () {
 
+            // Setup - add a text input to each footer cell
+
+
+
+
+
+
+
             $.ajax({
                 type: 'get',
                 dataType: 'json',
                 cache: false,
                 url: '/Reports/GetHierarchy',
-
                 success: function (records, textStatus, jqXHR) {
                     $('#myButton').searchAreaControl({
                         data: records,
                         collapseNodes: true,
-
                         mainButton: {
                             defaultText: 'Terminal'
                         }
@@ -138,17 +175,22 @@
             });
 
 
+
             var oTable = $("#myTable").DataTable({
                 "processing": true, // for show progress bar
                 "serverSide": true, // for process server side
                 "filter": true,  // this is for Enable/disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "dom": '<"top"i>rt<"bottom"lp><"clear">', // for checnge datatable controls positions
+                //"dom": 'Bfrtip', // for checnge datatable controls positions
+                "orderCellsTop": true,
+                "fixedHeader": true,
+                "searching": true,
 
                 "ajax": {
                     "url": "/Reports/LoadData",
                     "type": "POST",
-                    "datatype": "json"
+                    "datatype": "json",
                 },
                 "columns": [
                     { "data": "TID", "name": "TID", "autoWidth": true },
@@ -160,22 +202,35 @@
                     { "data": "ReconciliationDate", "name": "ReconciliationDate", "autoWidth": true },
                     {
                         "data": "RRN", "render": function (data) {
-                            var myUrl = '@Url.Action("PrintRecipt", "Reports")?RRN=' + data;
+                           // var myUrl = '@Url.Action("PrintRecipt", "Reports")?RRN=' + data;
                               //  myUrl = '@Url.Action("PrintSalarySlip", "Reports")';
-
-                            return '<a href=\"' + myUrl + '\" class=\"btn btn-success btn-sm\" target="_blank">E-Recipt</a>';
-                           // return "<a class='btn btn-success btn-sm' ><i class='fa fa-download'></i> E-Recipt </a>";
+                            //return '<a href=\"' + myUrl + '\" class=\"btn btn-success btn-sm\" target="_blank">E-Recipt</a>';
+                            return "<span class='btn btn-success btn-sm' onclick='getReceipt(" + data + ")'>E-Recipt </span>";
                         },
                         "orderable": false,
                         "searchable": false,
                         "width": "75px"
                     }
 
+                ],
 
-                ]
+
             });
 
 
+            //$('#myTable thead tr').clone(true).appendTo('#myTable thead');
+            //$('#myTable thead tr:eq(1) th').each(function (i) {
+            //    var title = $(this).text();
+            //    $(this).html('<input type="text" style="width:89%;" placeholder="Search" />');
+
+            //    $('input', this).on('keyup change', function () {
+            //        if (oTable.column(i).search() !== this.value) {
+            //            oTable.column(i).search(this.value).draw();
+            //        }
+            //    });
+            //});
+
+           // oTable.destroy();
 
 
             $('#btnSearch').click(function () {
@@ -187,7 +242,6 @@
 
 
                 var checkedIds = $('#myButton').searchAreaControl('getSelectedByAttribute', 'key');
-
 
 
 
@@ -263,9 +317,17 @@
         });
 
 
+        function getReceipt(id) {
+
+          $("#mdbody").load('/Reports/PrintRecipt?RRN=' + id);
+            $("#ReceiptModal").modal("show");
+            $("#hdn_rrnID").val(id);
+        };
 
 
-
+        function Printd() {
+            $.get('/Reports/pdfGenerator', function () { });
+        }
 
     </script>
 }
